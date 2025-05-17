@@ -1,0 +1,47 @@
+name: ${PROJECT}
+
+services:
+    nb:
+        image: ${PROJECT}-nb
+        ports:
+            - "127.0.0.1:5000:5000"
+            - "127.0.0.1:4040:4040"
+        volumes:
+            - "./nb:/nb"
+        deploy:
+            resources:
+                limits:
+                    memory: 1.5G
+
+    nn:
+        image: ${PROJECT}-nn
+        hostname: nn
+        deploy:
+            resources:
+                limits:
+                    memory: 1G
+
+    dn:
+        image: ${PROJECT}-dn
+        depends_on:
+            - nn
+        deploy:
+            resources:
+                limits:
+                    memory: 1G
+
+    spark-boss:
+        image: ${PROJECT}-boss
+        hostname: boss
+        deploy:
+            resources:
+                limits:
+                    memory: 0.5G
+
+    spark-worker:
+        image: ${PROJECT}-worker
+        deploy:
+            replicas: 2
+            resources:
+                limits:
+                    memory: 2G

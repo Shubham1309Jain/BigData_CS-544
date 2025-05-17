@@ -1,0 +1,38 @@
+tag_id,tag
+0,greedy
+1,binary search
+2,dp
+3,2-sat
+4,implementation
+5,brute force
+6,constructive algorithms
+7,geometry
+8,number theory
+9,*special
+10,two pointers
+11,data structures
+12,sortings
+13,dfs and similar
+14,graphs
+15,trees
+16,combinatorics
+17,math
+18,bitmasks
+19,divide and conquer
+20,probabilities
+21,games
+22,interactive
+23,expression parsing
+24,dsu
+25,chinese remainder theorem
+26,hashing
+27,shortest paths
+28,meet-in-the-middle
+29,matrices
+30,strings
+31,flows
+32,string suffix structures
+33,ternary search
+34,fft
+35,graph matchings
+36,schedules

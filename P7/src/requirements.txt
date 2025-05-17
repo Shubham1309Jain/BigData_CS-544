@@ -1,0 +1,8 @@
+pandas==2.2.3
+kafka-python==2.1.5
+grpcio-tools==1.70.0 
+grpcio==1.70.0 
+protobuf==5.29.3
+pyarrow==19.0.1
+SQLAlchemy==2.0.38
+mysql-connector-python==9.2.0

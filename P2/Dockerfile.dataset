@@ -1,0 +1,17 @@
+# Dockerfile.dataset
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY PropertyLookup.proto .
+COPY dataset.py .
+COPY addresses.csv.gz .
+
+#installing the necessary dependencies
+RUN pip3 install grpcio grpcio-tools
+
+
+RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. PropertyLookup.proto
+
+
+CMD ["python3", "dataset.py"]

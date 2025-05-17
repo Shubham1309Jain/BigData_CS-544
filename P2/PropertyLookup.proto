@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service PropertyLookup {
+    rpc LookupByZip (LookupRequest) returns (LookupResponse);
+}
+
+message LookupRequest {
+    int32 zip = 1;
+    int32 limit = 2;
+}
+
+message LookupResponse {
+    repeated string addresses = 1;
+}

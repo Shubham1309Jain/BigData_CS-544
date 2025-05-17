@@ -1,0 +1,11 @@
+FROM mysql:8.4.0-oraclelinux8
+
+# Create an empty "temperatures" table when the container starts
+RUN echo "CREATE TABLE IF NOT EXISTS temperatures ( \
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, \
+            station_id TEXT, \
+            date DATE, \
+            degrees DOUBLE \
+          );" > /docker-entrypoint-initdb.d/init.sql
+
+CMD ["mysqld"]

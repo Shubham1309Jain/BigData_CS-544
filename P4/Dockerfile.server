@@ -1,0 +1,42 @@
+FROM p4-hdfs
+
+WORKDIR /app
+
+# Install system dependencies (if not already included in p4-hdfs)
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# Download and install Hadoop (if not already included in p4-hdfs)
+RUN wget https://downloads.apache.org/hadoop/common/hadoop-3.3.6/hadoop-3.3.6.tar.gz && \
+    tar -xvzf hadoop-3.3.6.tar.gz && \
+    mv hadoop-3.3.6 /hadoop && \
+    rm hadoop-3.3.6.tar.gz
+
+# Set JAVA_HOME for PyArrow (if not already set in p4-hdfs)
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+ENV PATH="${PATH}:${JAVA_HOME}/bin"
+
+# Set Hadoop environment variables (if not already set in p4-hdfs)
+ENV HADOOP_HOME=/hadoop
+ENV PATH="${HADOOP_HOME}/bin:${PATH}"
+ENV LD_LIBRARY_PATH="${HADOOP_HOME}/lib/native:${LD_LIBRARY_PATH}"
+
+# Create and activate a virtual environment
+RUN python3 -m venv /app/venv
+ENV PATH="/app/venv/bin:${PATH}"
+
+# Install Python dependencies in the virtual environment
+RUN pip install grpcio grpcio-tools pandas pyarrow requests mysql-connector-python
+
+# Copy all files from the current directory to /app in the container
+COPY . .
+
+# Generate gRPC code from the protobuf file
+RUN python -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. lender.proto
+
+# Set CLASSPATH dynamically and run the server
+CMD export CLASSPATH=`$HADOOP_HOME/bin/hdfs classpath --glob` && \
+    python server.py

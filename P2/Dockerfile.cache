@@ -1,0 +1,14 @@
+# Dockerfile.cache
+FROM python:3.9-slim
+
+WORKDIR /app
+
+COPY PropertyLookup.proto .
+COPY cache.py .
+
+RUN pip3 install requests
+RUN pip3 install flask grpcio grpcio-tools
+
+RUN python3 -m grpc_tools.protoc -I. --python_out=. --grpc_python_out=. PropertyLookup.proto
+
+CMD ["python3", "cache.py"]

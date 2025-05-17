@@ -1,0 +1,42 @@
+name: ${PROJECT}
+
+services:
+        kafka:
+                image: ${PROJECT}-kafka
+                container_name: ${PROJECT}-kafka
+                volumes:
+                        - ./src:/src
+                deploy:
+                        resources:
+                                limits:
+                                        memory: 3g
+                environment:
+                        - PROJECT=${PROJECT}
+
+        mysql:
+                image: ${PROJECT}-mysql
+                hostname: mysql
+                environment:
+                        MYSQL_ROOT_PASSWORD: abc
+                        MYSQL_DATABASE: CS544
+
+                deploy:
+                        resources:
+                                limits:
+                                        memory: 1g
+
+        nn:
+                image: ${PROJECT}-nn
+                hostname: boss
+                deploy:
+                        resources:
+                                limits:
+                                        memory: 1g
+
+        dn:
+                image: ${PROJECT}-dn
+                deploy:
+                        replicas: 3
+                        resources:
+                                limits:
+                                        memory: 1g
